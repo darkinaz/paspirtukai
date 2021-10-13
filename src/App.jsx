@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import './App.css';
-import Books from './Scooters';
-import NewBook from './NewScooter';
+import Scooter from './Scooters';
+import NewScooter from './NewScooter';
 import Modal from './Modal';
 import axios from 'axios';
 import Top from './Top';
@@ -9,24 +9,24 @@ import Top from './Top';
 
 function App() {
 
-  const [books, setBooks] = useState([]);
+  const [scooters, setScooters] = useState([]);
   const [lastUpdate, setLastUpdate] = useState(Date.now());
   const [modalId, setModalId] = useState(0);
-  const [booksCount, setBooksCount] = useState(0);
-  const [catCount, setCatCount] = useState([]);
+  const [scootersCount, setScootersCount] = useState(0);
+  const [scootCount, setScootCount] = useState([]);
 
 
   useEffect(() => {
     axios.get('http://localhost:3003/scooters')
       .then((response) => {
-        setBooks(response.data);
+        setScooters(response.data);
       })
   }, [lastUpdate])
 
   useEffect(() => {
     axios.get('http://localhost:3003/scooters/count')
       .then((response) => {
-        setBooksCount(response.data[0].booksCount);
+        setScootersCount(response.data[0].scootersCount);
       })
   }, [lastUpdate])
 
@@ -34,43 +34,43 @@ function App() {
     axios.get('http://localhost:3003/scooters/scooters-count')
       .then((response) => {
         console.log(response.data);
-        setCatCount(response.data);
+        setScootCount(response.data);
       })
   }, [lastUpdate])
 
-  const addBook = (book) => {
-    axios.post('http://localhost:3003/books', book)
+  const addScooter = (scooter) => {
+    axios.post('http://localhost:3003/scooters', scooter)
       .then(() => {
         setLastUpdate(Date.now())
       })
   }
 
-  const editBook = (id, book) => {
-    axios.put('http://localhost:3003/books/'+ id, book)
+  const editScooter = (id, scooter) => {
+    axios.put('http://localhost:3003/scooters/'+ id, scooter)
       .then(() => {
         setLastUpdate(Date.now())
       })
   }
 
-  const deleteBook = (id) => {
-    axios.delete('http://localhost:3003/books/'+ id)
+  const deleteScooter = (id) => {
+    axios.delete('http://localhost:3003/scooters/'+ id)
       .then(() => {
         setLastUpdate(Date.now())
       })
   }
 
-  const getBook = id => {
+  const getScooter = id => {
     if (id === 0) {
       return {
-        title: '',
-        author: '',
-        category: '',
-        pages: ''
+        registration_code: '',
+        is_busy: '',
+        last_use_time: '',
+        total_ride_kilometres: ''
     };
     }
-    for(let i = 0; i < books.length; i++) {
-      if (books[i].id === id) {
-        return {...books[i]};
+    for(let i = 0; i < scooters.length; i++) {
+      if (scooters[i].id === id) {
+        return {...scooters[i]};
       }
     }
   }
@@ -84,31 +84,31 @@ function App() {
   }
 
   const sort = by => {
-    const booksCopy = books.slice();
-    if ('title' === by) {
-      booksCopy.sort((a, b) => {
-        if (a.title > b.title) {
+    const scootersCopy = scooters.slice();
+    if ('registration_code' === by) {
+      scootersCopy.sort((a, b) => {
+        if (a.registration_code > b.registration_code) {
           return 1;
         }
-        if (a.title < b.title) {
+        if (a.registration_code < b.registration_code) {
           return -1;
         }
         return 0;
       });
     }
-    if ('pages' === by) {
-      booksCopy.sort((a, b) => a.pages - b.pages);
+    if ('is_busy' === by) {
+      scootersCopy.sort((a, b) => a.is_busy - b.is_busy);
     }
-    setBooks(booksCopy);
+    setScooters(scootersCopy);
   }
 
 
   return (
     <>
-      <Top sort={sort} booksCount={booksCount} catCount={catCount}></Top>
-      <NewBook addBook={addBook}></NewBook>
-      <Books books={books} deleteBook={deleteBook} showModal={showModal}></Books>
-      <Modal id={modalId} editBook={editBook} book={getBook(modalId)} hideModal={hideModal}></Modal>
+      <Top sort={sort} scootersCount={scootersCount} scootCount={scootCount}></Top>
+      <NewScooter addScooter={addScooter}></NewScooter>
+      <Scooter scooters={scooters} deleteScooter={deleteScooter} showModal={showModal}></Scooter>
+      <Modal id={modalId} editScooter={editScooter} scooter={getScooter(modalId)} hideModal={hideModal}></Modal>
     </>
   );
 }

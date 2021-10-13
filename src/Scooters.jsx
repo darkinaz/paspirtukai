@@ -1,7 +1,7 @@
-import Book from './Scooter';
+import Scooter from './Scooter';
 
 
-function Scooters({books, deleteBook, showModal}) {
+function Scooters({scooters, deleteScooter, showModal}) {
 
 
 
@@ -9,7 +9,7 @@ function Scooters({books, deleteBook, showModal}) {
         <>
             <div className="container">
                 <div className="row">
-                    {books.map(book => <Book key={book.id} book={book} deleteBook={deleteBook} showModal={showModal} />)}
+                    {scooters.map(scooter => <Scooter key={scooter.id} scooter={scooter} deleteScooter={deleteScooter} showModal={showModal} />)}
                 </div>
             </div>
         </>

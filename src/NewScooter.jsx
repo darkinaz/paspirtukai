@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function NewScooter({addBook}) {
+function NewScooter({addScooter}) {
     const [registration_code, setReg] = useState('');
     const [is_busy, setBusy] = useState('');
     const [last_use_time, setTime] = useState('');
@@ -24,7 +24,7 @@ function NewScooter({addBook}) {
     }
 
     const insert = () => {
-       addBook({
+       addScooter({
             registration_code: registration_code,
             is_busy: is_busy,
             last_use_time: last_use_time,
